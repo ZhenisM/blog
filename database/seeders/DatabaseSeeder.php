@@ -12,11 +12,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        \App\Models\Post::factory(10)->create();
+
+        \App\Models\AdminUser::factory(1)->create([
+            'name' => 'Admin',
+            'email' => 'laravel@laravel.com',
+            'password' => bcrypt("12345"),
+        ]);
     }
 }
