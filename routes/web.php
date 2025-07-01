@@ -14,13 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware("r")->group(function () {
-	Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('home');
-
-	Route::post('/contact_form', [\App\Http\Controllers\IndexController::class, 'index'])->name('contact_form');
-});
-
-Route::prefix("news")->middleware("r")->group(function () {
-	Route::post('{id}', [\App\Http\Controllers\IndexController::class, 'index'])->name('contact_form');
-});
-
+Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('home');
