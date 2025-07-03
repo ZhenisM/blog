@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Главная страница')
+@section('title', 'Статьи')
 
 @section('content')
 
@@ -10,5 +10,7 @@
         @foreach ($posts as $post)
             @include('partials.posts.item', ["post" => $post])
         @endforeach
+
+        {{ $posts->links() }}
     </div>
 @endsection

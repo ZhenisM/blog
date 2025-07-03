@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class PostController extends Controller
 {
     public function index()
     {
-    	$posts = Post::orderBy("created_at", "DESC")->limit(3)->get();
+    	$posts = Post::orderBy("created_at", "DESC")->paginate(3);
 
-    	return view('welcome', [
+    	return view('posts.index', [
     		"posts" => $posts,
     	]);
     }
