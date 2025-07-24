@@ -15,4 +15,9 @@ class AdminUser extends Authenticatable
     	"email",
     	"password"
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
