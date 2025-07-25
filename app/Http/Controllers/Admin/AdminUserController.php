@@ -48,27 +48,37 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $user = AdminUser::findOrFail($id);
+
+        return view('admin.admin_users.create', [
+            "user" => $user,
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AdminUserFormRequest $request, string $id)
     {
-        //
+        $user = AdminUser::findOrFail($id);
+
+        $data = $request->validated();
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        $user->roles()->sync($data['roles'] ?? []);
+
+        return redirect(route("admin.admin_users.index"));
     }
 
     /**
@@ -76,6 +86,8 @@ class AdminUserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        AdminUser::destroy($id);
+
+        return redirect(route("admin.admin_users.index"));
     }
 }

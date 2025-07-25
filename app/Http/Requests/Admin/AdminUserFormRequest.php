@@ -21,10 +21,13 @@ class AdminUserFormRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->route('admin_user');
+
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:admin_users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'email' => 'required|email|unique:admin_users,email,' . $userId,
+            'password' => 'nullable|min:6|confirmed',
+            'roles' => 'array',
         ];
     }
 }
