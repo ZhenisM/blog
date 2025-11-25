@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostFormRequest;
 use App\Models\Post;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', Post::class);
         $posts = Post::orderBy("created_at", "DESC")->paginate(10);
 
         return view('admin.posts.index', [
@@ -53,9 +56,17 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        $post = Post::findOrFail($id);
+        //$post = Post::findOrFail($id);
+
+        /*if (!Gate::forUser(auth('admin')->user())->allows('update', $post)) {
+            abort(403);
+        }
+        
+        if(auth('admin')->user()->cannot('update', $post)) {
+            abort(403);
+        }*/
 
         return view('admin.posts.create', [
             "post" => $post,
@@ -65,9 +76,9 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostFormRequest $request, string $id)
+    public function update(PostFormRequest $request, Post $post)
     {
-        $post = Post::findOrFail($id);
+        //$post = Post::findOrFail($id);
 
         $data = $request->validated();
 
@@ -86,9 +97,11 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        Post::destroy($id);
+        //Post::destroy($id);
+
+        $post->delete();
 
         return redirect(route("admin.posts.index"));
     }
