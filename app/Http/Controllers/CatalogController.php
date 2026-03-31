@@ -11,11 +11,11 @@ class CatalogController extends Controller
     {
         $response = Http::get('https://www.an-d.asia/ajax/get_catalog_list.php');
 
-        $items = json_decode($response->body(), true);
+        $data = json_decode($response->body(), true);
 
         //dd($items);
-
-        $products = json_decode($response->body(), true);
+        $sections = $data['sections'] ?? [];
+        $products = $data['products'] ?? [];
 
         return view('catalog.index', compact('products'));
     }
